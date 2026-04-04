@@ -1,4 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
+﻿using MineSweeper.Models;
 
 namespace MineSweeper.Logic
 {
@@ -6,40 +6,108 @@ namespace MineSweeper.Logic
     {
         //manage user input here, especially all the Try/Catch and Exception handling
 
-
-        public Tuple<int,int> BoardSelect() 
+        /// <summary>
+        /// gets user input to select size of board
+        /// </summary>
+        /// <returns> x and y dimensions </returns>
+        public static Board[,] BoardSelect()
         {
-            
+
             Console.WriteLine("Select Board size: \n1) [8,8] \n2) [12,12] \n3) [16,16]");
             if (int.TryParse(Console.ReadLine(), out int choice) && 0 <= choice && choice <= 3)
             {
                 if (choice == 1)
                 {
-                    return Tuple.Create(8, 8);
+                    object[,] board = new object[8, 8];
+                    return (Board[,])board;
                 }
                 else if (choice == 2)
                 {
-                    return Tuple.Create(12, 12);
+                    object[,] board = new object[12, 12];
+                    return (Board[,])board;
                 }
                 else if (choice == 3)
                 {
-                    return Tuple.Create(16, 16);
+                    object[,] board = new object[16, 16];
+                    return (Board[,])board;
                 }
                 else
                 {
                     Console.WriteLine("Invalid input; try again (temporary default to [8,8])");
-                    return Tuple.Create(8, 8); //temporary default
+                    object[,] board = new object[8, 8];
+                    return (Board[,])board; //temporary default
                 }
-                
+
             }
             else
             {
                 Console.WriteLine("Invalid input; try again (temporary default to [8,8])");
-                return Tuple.Create(8, 8); //temporary default
+                object[,] board = new object[8, 8];
+                return (Board[,])board; //temporary default
             }
 
 
         } //xUnit test for this? sounds good?
+
+        public Tuple<int, int, int> AltBoardSelect()
+        {
+
+            Console.WriteLine("Select Board size: \n1) [8,8] \n2) [12,12] \n3) [16,16]");
+            if (int.TryParse(Console.ReadLine(), out int choice) && 0 <= choice && choice <= 3)
+            {
+                if (choice == 1)
+                {
+                    Console.WriteLine("Maze dimenstions: 8x8 || Mine count: 6");
+                    return Tuple.Create(8, 8, 6);
+                }
+                else if (choice == 2)
+                {
+                    Console.WriteLine("Maze dimenstions: 12x12 || Mine count: 10");
+                    return Tuple.Create(12, 12, 10);
+                }
+                else if (choice == 3)
+                {
+                    Console.WriteLine("Maze dimenstions: 16x16 || Mine count: 14");
+                    return Tuple.Create(16, 16, 12);
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input; try again (temporary default to [8,8] w/ 6 bombs)");
+                    return Tuple.Create(8, 8, 6); //temporary default
+                }
+
+            }
+            else
+            {
+                Console.WriteLine("Invalid input; try again (temporary default to [8,8] w/ 6 bombs)");
+                return Tuple.Create(8, 8, 6); //temporary default
+            }
+
+
+        } //xUnit test for this? sounds good?
+
+        /// <summary>
+        /// gets user input of user's action druing play
+        /// </summary>
+        /// <returns></returns>
+        public string Action()
+        {
+            Console.WriteLine("Reveal or flag? ");
+            if (Console.ReadLine().ToLower() == "r")
+            {
+                return "r";
+            }
+            else if (Console.ReadLine().ToLower() == "f")
+            {
+                return "f";
+            }
+            else
+            {
+                Console.WriteLine("Invalid action. Try again");
+                return "shits fucked my guy"; //temp default
+            }
+
+        }
 
         /// <summary>
         /// gets user input for X coodinate

@@ -1,21 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Text;
+﻿using System.Text;
+
 
 namespace MineSweeper.Models
 {
-    internal class Board
+    public class Board
     {
-        //display/visuals
-        public object[,] Gameboard { get; set; }
+        private Random rand = new Random();
+
+        public object tile { get; set; } //this will be used to determine what is in the cell
+        public object[,] board { get; set; }
         private int Bombcount = 0; //this will be updated/replaced by the number of bombed based on level size
 
-        public string Hidden = "#";
-        public string flag = "F";
-        public string bomb = "b";
-        public string epmptyRevealed = ".";
-        public int RevealNearBomb = 1; //between 1-8, if there's bombs nearby. make a method for being near a bomb to determine what number is placed based on how many nearby bombes
+        //display/visuals
+        public static string Hidden = "#";
+        public static string flag = "F";
+        public static string bomb = "b";
+        public static string epmptyRevealed = ".";
+        public int RevealNearBomb = 1; //between 1-8, if there's bombs nearby. make a method for being near a bomb to determine what number is placed based on how many nearby bombs
 
         /// <summary>
         /// Generate a game board based on player's size selection
@@ -25,51 +26,90 @@ namespace MineSweeper.Models
         public Board(int x, int y, int b)
         {
             //remember, this must be called AFTER asking player for board size input, variables from there used here
-            Gameboard = new object[x, y];
+            board = new object[x, y];
             Bombcount = b;
         }
 
+
         /// <summary>
-        /// places everything in the Board, including the bombs, labels, and empty spaces.
+        /// finds an empty cell in an array
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public void BoardMaker(int x, int y)
+        /// <returns></returns>
+        public (int, int) FindEmptyCell(object[,] board, int width, int height)
         {
+            int x, y;
+            do
+            {
+                x = rand.Next(width-1, height-1); //avoid edges
+                y = rand.Next(width-1, height-1);
+            } while (board[x, y] != null); //keep looking until empty cell
+            return (x, y);
+        }
+
+        public void PlaceBombs(Board board) //should this return something?
+        {
+            for (int i = 0; i < Bombcount; i++)
+            {
+                var (x, y) = FindEmptyCell(board.board, board.board.GetLength(0), board.board.GetLength(1));
+                board.board[x, y] = bomb;
+                Console.WriteLine($"board currently has {Bombcount} bombs");
+                
+            }
+        }
+
+        
+
+
+        public void DisplayBoard(Board board)
+
+        {
+            for (int i = 0; i < board.board.GetLength(0); i++)
+            {
+                for (int j = 0; j < board.board.GetLength(1); j++)
+                {
+                    var cell = board.board[i, j];
+                    //show hidden marker if null, otherwise the cell's display
+                    Console.Write(cell == null ? Board.Hidden + " " : cell.ToString() + " ");
+                }
+                Console.WriteLine();
+            }
+        }
+
+        public string ToString(Board[,] board)
+        {
+            var sb = new StringBuilder();
             for (int i = 0; i < 10; i++)
             {
                 for (int j = 0; j < 10; j++)
                 {
-                    if (i == 0 || i == 9 || j == 0 || j == 9)
+                    if (board[i, j] is null)
                     {
-                        //fill top row with numbers 0 - (x-1)
-                        /*
-                         * pseudo for the numbers to organize thoughts
-                         * for x = 0
-                         *  number yeach y accoring to index
-                         */
-                        while (x == 0)
-                        {
-                            Gameboard[0, j] = j; //fill top row with numbers 0 - (x-1)
+                        sb.Append("  ");
+                        continue;
 
-                        } //make an xunit test?
+                    }
+                    Type type = board[i, j].GetType();
 
-                        //fill left column with numbers 0 - (y-1)
-                        while (y == 0)
-                        {
-                            Gameboard[i, 0] = i; //fill left column with numbers 0 - (y-1)
-                        } //make xUnit test?
-
+                    if (type.Equals(typeof(Flag)))
+                    {
+                        sb.Append("F");
+                    }
+                    else if (type.Equals(typeof(Bomb)))
+                    {
+                        sb.Append("b");
                     }
                     else
                     {
-                        Gameboard[i, j] = null;
-
+                        sb.Append(board[i, j]); //display character
                     }
+                    sb.Append(' ');
                 }
+                sb.AppendLine();
             }
+            return sb.ToString();
         }
-
 
     }
 }
