@@ -15,12 +15,9 @@ namespace MineSweeper.Models
     {
         //bomb placement, count goes here
         public string bomb = "b"; //display
-        public bool isRevealed = false; //reveal logic, if true, game over
-
-        public Bomb()
-        {
-            //obj contstruction logic, idk what to put here
-        }
+        public bool bombRevealed = false; //reveal logic, if true, game over
+        public List<(int, int)> bombLocations = new List<(int, int)>(); //list of bomb locations for win condition checking
+        
 
         /// <summary>
         /// Creates and places a bomb in a located empty space in the level
@@ -37,6 +34,8 @@ namespace MineSweeper.Models
             string bombName = $"bomb{BombCount + 1}";
             BombCount++;
         }
+
+
     }
 
     public class Flag : BombFlag
@@ -44,27 +43,28 @@ namespace MineSweeper.Models
 
         public string flag = "F"; //display
         public bool isPlaced = false; //flag placement logic, if true, flag is placed
+        public List<(int, int)> flagLocations = new List<(int, int)>();
 
-
-        public bool PlaceFlag(int x, int y, Board[,] board)
-        { 
-            bool isPlaced = false;
-            var cell = board[x, y];
-            //check for valid placement (not revealed)
-            if (board[x,y] == null || board[x, y].ToString() == Board.Hidden)
-            {
-                //place flag
-                Board.flag = "F";
-                isPlaced = true;
-            }
-
-            return isPlaced;
-        }
-        public Flag()
+        public bool PlaceFlag(int x, int y, Board board)
         {
-            string flag = "F";
-            isPlaced = true;
-            //obj construction logic, idk what to put here
+            if (board == null) return false;
+            if (x < 0 || x >= board.board.GetLength(0) || y < 0 || y >= board.board.GetLength(1)) return false;
+
+            var cell = board.board[x, y];
+            if (cell == null) // hidden
+            {
+                board.board[x, y] = Board.flag;
+                flagLocations.Add((x, y));
+                return true;
+            }
+            else if (cell?.ToString() == Board.flag) // unflag
+            {
+                board.board[x, y] = null;
+                flagLocations.Remove((x, y));
+                return false;
+            }
+            return false;
         }
+        
     }
 }

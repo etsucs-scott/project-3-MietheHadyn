@@ -10,7 +10,7 @@ namespace MineSweeper.Logic
         /// gets user input to select size of board
         /// </summary>
         /// <returns> x and y dimensions </returns>
-        public static Board[,] BoardSelect()
+        public static Board[,] BoardSelect() //this isn't used. scrap?
         {
 
             Console.WriteLine("Select Board size: \n1) [8,8] \n2) [12,12] \n3) [16,16]");
@@ -93,13 +93,14 @@ namespace MineSweeper.Logic
         public string Action()
         {
             Console.WriteLine("Reveal or flag? ");
-            if (Console.ReadLine().ToLower() == "r")
+            string input = Console.ReadLine().ToLower();
+            if (input == "r")
             {
-                return "r";
+                return "reveal";
             }
-            else if (Console.ReadLine().ToLower() == "f")
+            else if (input == "f")
             {
-                return "f";
+                return "flag";
             }
             else
             {

@@ -1,4 +1,6 @@
-﻿using MineSweeper.Logic;
+﻿//Credits: debugging and some coding assistance provided by Github copilot, Most code, logic, and structure provided by me
+
+using MineSweeper.Logic;
 using MineSweeper.Models;
 
 /* order of operations, delete once actually done:
@@ -17,16 +19,8 @@ using MineSweeper.Models;
 Console.WriteLine("Playing Minesweeper: Seeds will not save the game state, only highscore and bomb location");
 Console.WriteLine("Main menu:");
 
-var input = new MineSweeper.Logic.Input();
-var dims = input.AltBoardSelect();  //returns Tuple<int,int,int>
-int width = dims.Item1;
-int height = dims.Item2;
-int bombs = dims.Item3;
+GameLoop.PlayGame();
 
-var board = new Board(width, height, bombs);
-board.PlaceBombs(board); //causes the code to kinda stop dead; no crash, just no continuing and no inputs
-
-board.DisplayBoard(board); //print the 2D array to console
 
 
 
