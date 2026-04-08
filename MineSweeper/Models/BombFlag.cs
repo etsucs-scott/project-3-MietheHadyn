@@ -26,14 +26,7 @@ namespace MineSweeper.Models
         /// <param name="width"></param>
         /// <param name="height"></param>
         /// <param name="BombCount"></param>
-        public void placeBomb(Board[,] board, int width, int height, int BombCount) //maybe get rid of this one
-        {
-            if (board == null || board.Length == 0) return;
-            (int, int) cellPlace = board[0,0].FindEmptyCell(board, width, height);
-            //make that value of the board a bomb
-            string bombName = $"bomb{BombCount + 1}";
-            BombCount++;
-        }
+        
 
 
     }
@@ -51,13 +44,13 @@ namespace MineSweeper.Models
             if (x < 0 || x >= board.board.GetLength(0) || y < 0 || y >= board.board.GetLength(1)) return false;
 
             var cell = board.board[x, y];
-            if (cell == null) // hidden
+            if (cell == null) //hidden
             {
                 board.board[x, y] = Board.flag;
                 flagLocations.Add((x, y));
                 return true;
             }
-            else if (cell?.ToString() == Board.flag) // unflag
+            else if (cell?.ToString() == Board.flag) //unflag
             {
                 board.board[x, y] = null;
                 flagLocations.Remove((x, y));

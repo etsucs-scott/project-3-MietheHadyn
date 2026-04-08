@@ -9,15 +9,15 @@ namespace MineSweeper.Models
 
         public object cell { get; set; } //this will be used to determine what is in the cell
         public object[,] board { get; set; }
-        private int Bombcount = 0; //this will be updated/replaced by the number of bombed based on level size
+        public int Bombcount = 0; //this will be updated/replaced by the number of bombed based on level size
         public List<(int, int)> bombLocations = new List<(int, int)>();
 
         //display/visuals
         public static string Hidden = "#";
         public static string flag = "F";
-        public static string bomb = "b"; //this exposes the bombs; keep until last second
-        public static string epmptyRevealed = ".";
-        public int RevealNearBomb = 1; //between 1-8, if there's bombs nearby. make a method for being near a bomb to determine what number is placed based on how many nearby bombs
+        public static string bomb = "b"; //this exposes the bombs, how to fix??
+        public static string emptyRevealed = ".";
+        public int NearBomb = 1; //between 1-8, if there's bombs nearby. make a method for being near a bomb to determine what number is placed based on how many nearby bombs
 
         /// <summary>
         /// Generate a game board based on player's size selection
@@ -49,19 +49,24 @@ namespace MineSweeper.Models
             return (x, y);
         }
 
-        public void PlaceBombs() //should this return something?
+        /// <summary>
+        /// Places specified number of bombs randomly on the board
+        /// </summary>
+        
+
+        public void seedPlaceBombs(int seed, int width, int height, int Bombcount)
         {
+            Random r = new(seed);
+
             for (int i = 0; i < Bombcount; i++)
             {
-                var (x, y) = FindEmptyCell(board, board.GetLength(0), board.GetLength(1));
+                int x = r.Next(width);
+                int y = r.Next(height);
                 board[x, y] = bomb;
                 bombLocations.Add((x, y));
-                
             }
             Console.WriteLine($"board currently has {Bombcount} bombs");
         }
-
-        
 
 
         public void DisplayBoard()
@@ -98,9 +103,9 @@ namespace MineSweeper.Models
                     {
                         sb.Append("F");
                     }
-                    else if (type.Equals(typeof(Bomb)) ) 
+                    else if (type.Equals(typeof(Bomb)))
                     {
-                        sb.Append("#"); //bombs are hidden until revealed, upon revealed, game loss
+                        sb.Append("#"); //bombs are hidden until revealed, upon revealed, game loss //doesnt work
                     }
                     else
                     {

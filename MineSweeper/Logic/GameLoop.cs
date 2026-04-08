@@ -12,17 +12,17 @@ namespace MineSweeper.Logic
         private static System.Timers.Timer gameTimer = new System.Timers.Timer(1000);
 
         //manage game loop, win/loss, timer
-        public bool End = false; //bool to determine if the game ended 
+        public bool end = false; //bool to determine if the game ended 
         public bool win = false; //bool to determine win
 
         
-        public static void PlayGame() //prob returns something, figure it out later
+        public static void PlayGame() //prob returns something?
         {
             bool End = false;
             bool win = false;
 
             var input = new MineSweeper.Logic.Input();
-            var dims = input.AltBoardSelect();  //returns Tuple<int,int,int>
+            var dims = input.BoardSelect();  //returns Tuple<int,int,int>
             int width = dims.Item1;
             int height = dims.Item2;
             int bombs = dims.Item3;
@@ -31,20 +31,21 @@ namespace MineSweeper.Logic
             int seed = new Seeds().SeedInput(startTime);
             Console.WriteLine(seed);
             var board = new Board(width, height, bombs);
-            board.PlaceBombs(); //causes the code to kinda stop dead; no crash, just no continuing and no inputs
+            board.seedPlaceBombs(seed, width, height, board.Bombcount); 
 
             board.DisplayBoard(); //print the 2D array to console
             var flagger = new Flag(); //flag instancer
+            var revealer = new Reveal(); //reveal instancer
 
             while (End == false)
             {
                 string action = input.Action(); //returns string of either "reveal" or "flag"
-                int x = input.XSelection(); //returns int for x coordinate
-                int y = input.YSelection(); //returns int for y coordinate
+                int x = input.XSelection(width); //returns int for x coordinate
+                int y = input.YSelection(height); //returns int for y coordinate
                 if (action == "reveal")
                 {
                     Console.WriteLine("Reveal method");
-                    //Reveal.actReveal(x, y, board); //reveal the tile at the coordinates; if it's a bomb, End = true and win = false; if it's not a bomb, reveal the tile and check if the player has won
+                    revealer.actReveal(x, y, board); //reveal the tile at the coordinates; if it's a bomb, End = true and win = false; if it's not a bomb, reveal the tile and check if the player has won
                 }
                 else if (action == "flag")
                 {

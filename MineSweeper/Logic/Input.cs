@@ -10,80 +10,33 @@ namespace MineSweeper.Logic
         /// gets user input to select size of board
         /// </summary>
         /// <returns> x and y dimensions </returns>
-        public static Board[,] BoardSelect() //this isn't used. scrap?
+        public Tuple<int, int, int> BoardSelect()
         {
-
-            Console.WriteLine("Select Board size: \n1) [8,8] \n2) [12,12] \n3) [16,16]");
-            if (int.TryParse(Console.ReadLine(), out int choice) && 0 <= choice && choice <= 3)
+            while (true)
             {
-                if (choice == 1)
+                Console.WriteLine("Select Board size: \n1) [8,8] \n2) [12,12] \n3) [16,16]");
+                string? raw = Console.ReadLine();
+                if (int.TryParse(raw, out int choice) && choice >= 1 && choice <= 3)
                 {
-                    object[,] board = new object[8, 8];
-                    return (Board[,])board;
-                }
-                else if (choice == 2)
-                {
-                    object[,] board = new object[12, 12];
-                    return (Board[,])board;
-                }
-                else if (choice == 3)
-                {
-                    object[,] board = new object[16, 16];
-                    return (Board[,])board;
-                }
-                else
-                {
-                    Console.WriteLine("Invalid input; try again (temporary default to [8,8])");
-                    object[,] board = new object[8, 8];
-                    return (Board[,])board; //temporary default
+                    if (choice == 1)
+                    {
+                        Console.WriteLine("Maze dimenstions: 8x8 || Mine count:8");
+                        return Tuple.Create(8, 8,8);
+                    }
+                    else if (choice == 2)
+                    {
+                        Console.WriteLine("Maze dimenstions: 12x12 || Mine count: 10");
+                        return Tuple.Create(12, 12, 10);
+                    }
+                    else // choice == 3
+                    {
+                        Console.WriteLine("Maze dimenstions: 16x16 || Mine count: 14");
+                        return Tuple.Create(16, 16, 12);
+                    }
                 }
 
+                Console.WriteLine("Invalid input; try again.");
             }
-            else
-            {
-                Console.WriteLine("Invalid input; try again (temporary default to [8,8])");
-                object[,] board = new object[8, 8];
-                return (Board[,])board; //temporary default
-            }
-
-
-        } //xUnit test for this? sounds good?
-
-        public Tuple<int, int, int> AltBoardSelect()
-        {
-
-            Console.WriteLine("Select Board size: \n1) [8,8] \n2) [12,12] \n3) [16,16]");
-            if (int.TryParse(Console.ReadLine(), out int choice) && 0 <= choice && choice <= 3)
-            {
-                if (choice == 1)
-                {
-                    Console.WriteLine("Maze dimenstions: 8x8 || Mine count: 6");
-                    return Tuple.Create(8, 8, 6);
-                }
-                else if (choice == 2)
-                {
-                    Console.WriteLine("Maze dimenstions: 12x12 || Mine count: 10");
-                    return Tuple.Create(12, 12, 10);
-                }
-                else if (choice == 3)
-                {
-                    Console.WriteLine("Maze dimenstions: 16x16 || Mine count: 14");
-                    return Tuple.Create(16, 16, 12);
-                }
-                else
-                {
-                    Console.WriteLine("Invalid input; try again (temporary default to [8,8] w/ 6 bombs)");
-                    return Tuple.Create(8, 8, 6); //temporary default
-                }
-
-            }
-            else
-            {
-                Console.WriteLine("Invalid input; try again (temporary default to [8,8] w/ 6 bombs)");
-                return Tuple.Create(8, 8, 6); //temporary default
-            }
-
-
         } //xUnit test for this? sounds good?
 
         /// <summary>
@@ -92,39 +45,51 @@ namespace MineSweeper.Logic
         /// <returns></returns>
         public string Action()
         {
-            Console.WriteLine("Reveal or flag? ");
-            string input = Console.ReadLine().ToLower();
-            if (input == "r")
+            while (true)
             {
-                return "reveal";
-            }
-            else if (input == "f")
-            {
-                return "flag";
-            }
-            else
-            {
-                Console.WriteLine("Invalid action. Try again");
-                return "shits fucked my guy"; //temp default
-            }
+                Console.WriteLine("Reveal (r) or Flag (f)? ");
+                string? input = Console.ReadLine()?.Trim().ToLower();
+                if (string.IsNullOrEmpty(input))
+                {
+                    Console.WriteLine("Invalid action. Try again.");
+                    continue;
+                }
 
+                if (input == "r" || input == "reveal")
+                {
+                    return "reveal";
+                }
+                else if (input == "f" || input == "flag")
+                {
+                    return "flag";
+                }
+                else
+                {
+                    Console.WriteLine("Invalid action. Try again.");
+                }
+            }
         }
 
         /// <summary>
         /// gets user input for X coodinate
         /// </summary>
         /// <returns></returns>
-        public int XSelection()
+        public int XSelection(int? width = null) //y and x are flipped in the board??
         {
-            Console.WriteLine("Enter The X coordinate: ");
-            if (int.TryParse(Console.ReadLine(), out int x) && 0 <= x && x <= 9)
+            while (true)
             {
-                return x;
-            }
-            else
-            {
-                Console.WriteLine("Invalid input; try again (temporary default to 0)");
-                return 0; //temporary default
+                if (width.HasValue)
+                    Console.WriteLine($"Enter The X coordinate (0-indexed, 0...{width.Value - 1}): ");
+                else
+                    Console.WriteLine("Enter The X coordinate (0-indexed): ");
+
+                string? raw = Console.ReadLine();
+                if (int.TryParse(raw, out int x) && x >= 0 && (!width.HasValue || x < width.Value))
+                {
+                    return x;
+                }
+
+                Console.WriteLine("Invalid input; try again.");
             }
         }
 
@@ -132,22 +97,24 @@ namespace MineSweeper.Logic
         /// Get's user input for Y coodinate
         /// </summary>
         /// <returns></returns>
-        public int YSelection()
+        public int YSelection(int? height = null) //x and y are flipped on the board??
         {
-            Console.WriteLine("Enter The Y coordinate: ");
-            if (int.TryParse(Console.ReadLine(), out int y) && 0 <= y && y <= 9)
+            while (true)
             {
-                return y;
-            }
-            else
-            {
-                Console.WriteLine("Invalid input; try again (temporary default to 0)");
-                return 0; //temporary default
+                if (height.HasValue)
+                    Console.WriteLine($"Enter The Y coordinate (0-indexed, 0..{height.Value - 1}): ");
+                else
+                    Console.WriteLine("Enter The Y coordinate (0-indexed): ");
+
+                string? raw = Console.ReadLine();
+                if (int.TryParse(raw, out int y) && y >= 0 && (!height.HasValue || y < height.Value))
+                {
+                    return y;
+                }
+
+                Console.WriteLine("Invalid input; try again.");
             }
         }
         //add xUnit tests to verify valid/invalid input, [theory] or [Fact]?
-
-
-
     }
 }

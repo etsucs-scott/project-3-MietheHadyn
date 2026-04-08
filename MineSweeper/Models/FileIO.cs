@@ -10,6 +10,7 @@ namespace MineSweeper.Models
         string ItmFileType = "txt";
         string ItmFileName = "HighScore_File";
         string Itempath;
+        string FilePath = Path.Combine("HighScores", "scoresAndSeeds.csv"); //superior file path?
 
         public FileIO()
         {
