@@ -7,7 +7,7 @@ namespace MineSweeper.Logic
         //manage user input here, especially all the Try/Catch and Exception handling
 
         /// <summary>
-        /// gets user input to select size of board
+        /// gets user input to select size of board and number of bombs
         /// </summary>
         /// <returns> x and y dimensions </returns>
         public Tuple<int, int, int> BoardSelect()
@@ -74,14 +74,14 @@ namespace MineSweeper.Logic
         /// gets user input for X coodinate
         /// </summary>
         /// <returns></returns>
-        public int XSelection(int? width = null) //y and x are flipped in the board??
+        public int XSelection(int? width = null) //y and x are flipped in the board?? this gets the y coordinate
         {
             while (true)
             {
                 if (width.HasValue)
-                    Console.WriteLine($"Enter The X coordinate (0-indexed, 0...{width.Value - 1}): ");
+                    Console.WriteLine($"Enter The Y coordinate (0-indexed, 0...{width.Value - 1}): ");
                 else
-                    Console.WriteLine("Enter The X coordinate (0-indexed): ");
+                    Console.WriteLine("Enter The Y coordinate (0-indexed): ");
 
                 string? raw = Console.ReadLine();
                 if (int.TryParse(raw, out int x) && x >= 0 && (!width.HasValue || x < width.Value))
@@ -97,14 +97,14 @@ namespace MineSweeper.Logic
         /// Get's user input for Y coodinate
         /// </summary>
         /// <returns></returns>
-        public int YSelection(int? height = null) //x and y are flipped on the board??
+        public int YSelection(int? height = null) //x and y are flipped on the board?? this gets the x coordinate
         {
             while (true)
             {
                 if (height.HasValue)
-                    Console.WriteLine($"Enter The Y coordinate (0-indexed, 0..{height.Value - 1}): ");
+                    Console.WriteLine($"Enter The X coordinate (0-indexed, 0..{height.Value - 1}): ");
                 else
-                    Console.WriteLine("Enter The Y coordinate (0-indexed): ");
+                    Console.WriteLine("Enter The X coordinate (0-indexed): ");
 
                 string? raw = Console.ReadLine();
                 if (int.TryParse(raw, out int y) && y >= 0 && (!height.HasValue || y < height.Value))

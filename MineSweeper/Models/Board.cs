@@ -15,9 +15,10 @@ namespace MineSweeper.Models
         //display/visuals
         public static string Hidden = "#";
         public static string flag = "F";
-        public static string bomb = "b"; //this exposes the bombs, how to fix??
+        public static string bomb = "#"; //bomb display same as hidden as to not expose bomb location
+        public static string explode = "X"; //explosion for loss
         public static string emptyRevealed = ".";
-        public int NearBomb = 1; //between 1-8, if there's bombs nearby. make a method for being near a bomb to determine what number is placed based on how many nearby bombs
+        public int NearBomb = 1; //between 1-8, if there's bombs nearby.
 
         /// <summary>
         /// Generate a game board based on player's size selection
@@ -50,10 +51,8 @@ namespace MineSweeper.Models
         }
 
         /// <summary>
-        /// Places specified number of bombs randomly on the board
+        /// Places specified number of bombs randomly on the board, using a seed for reproducibility
         /// </summary>
-        
-
         public void seedPlaceBombs(int seed, int width, int height, int Bombcount)
         {
             Random r = new(seed);
@@ -69,11 +68,18 @@ namespace MineSweeper.Models
         }
 
 
-        public void DisplayBoard()
 
+        public void DisplayBoard()
         {
+            Console.Write("  ");
+            for (int j = 0; j < board.GetLength(1); j++)
+            {
+                Console.Write(j + " ");
+            }
+            Console.WriteLine();
             for (int i = 0; i < board.GetLength(0); i++)
             {
+                Console.Write(i + " ");
                 for (int j = 0; j < board.GetLength(1); j++)
                 {
                     var cell = board[i, j];
