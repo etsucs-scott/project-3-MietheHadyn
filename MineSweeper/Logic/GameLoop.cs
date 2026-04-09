@@ -14,7 +14,9 @@ namespace MineSweeper.Logic
 
         public static Tuple<DateTime, DateTime, bool> PlayGame()
         {
-            bool End = false;
+            var game = new GameLoop();
+
+            bool end = false;
             bool win = false;
 
             var input = new MineSweeper.Logic.Input();
@@ -35,11 +37,15 @@ namespace MineSweeper.Logic
             var flagger = new Flag(); //flag instancer
             var revealer = new Reveal(); //reveal instancer
 
-            while (End == false)
+            while (end == false)
             {
                 string action = input.Action(); //returns string of either "reveal" or "flag"
                 int y = input.YSelection(height); //returns int for y coordinate; apparently x
                 int x = input.XSelection(width); //returns int for x coordinate; apparently y
+
+                var winCheck = game.WinCondition(board);  //check win condition; if all non-bomb tiles are revealed, End = true and win = true
+                end = winCheck.Item1;
+                win = winCheck.Item2;
 
                 if (action == "reveal")
                 {
@@ -47,7 +53,7 @@ namespace MineSweeper.Logic
                     bool bombFound = revealer.actReveal(x, y, board); //reveal the tile at the coordinates; if it's a bomb, End = true and win = false; if it's not a bomb, reveal the tile and check if the player has won
                     if (bombFound == true)
                     {
-                        End = true;
+                        end = true;
                         win = false;
                         DateTime endTime = DateTime.Now;
 
@@ -60,9 +66,10 @@ namespace MineSweeper.Logic
 
                 }
                 board.DisplayBoard(); //print the 2D array to console
-                                      //check win condition; if all non-bomb tiles are revealed, End = true and win = true
+                
+
             }
-            if (End == true && win == true)
+            if (end == true && win == true)
             {
                 Console.WriteLine("You win!");
                 DateTime endTime = DateTime.Now;
@@ -77,5 +84,51 @@ namespace MineSweeper.Logic
 
         }
 
+
+        public Tuple<bool, bool> WinCondition(Board board) 
+        {
+            int hiddenCount = 0;
+            foreach (var cell in board.board)
+            {
+                if (cell == null)
+                {
+                    hiddenCount++;
+                }
+                else if (cell.ToString() == Board.bomb)
+                {
+                    continue;
+                }
+                else if (cell.ToString() == Board.Hidden)
+                {
+                    hiddenCount++;
+                }
+                else if (cell.ToString() == Board.flag)
+                {
+                    continue;
+                }
+                else if (cell.ToString() == Board.emptyRevealed)
+                {
+                    continue;
+                }
+                else
+                {
+                    continue;
+                }
+            }
+
+            if (hiddenCount == 0) //no more hidden cell (that aren't bombs)
+            {
+                end = true;
+                win = true;
+                return Tuple.Create(end, win);
+            }
+            else //any hidden cells means the game isn't over yet
+            {
+                end = false;
+                win = false;
+                return Tuple.Create(end, win);
+            }
+
+        }
     }
 }
