@@ -21,17 +21,17 @@ namespace MineSweeper.Logic
                     if (choice == 1)
                     {
                         Console.WriteLine("Maze dimenstions: 8x8 || Mine count:8");
-                        return Tuple.Create(8, 8,8);
+                        return Tuple.Create(8, 8, 10);
                     }
                     else if (choice == 2)
                     {
                         Console.WriteLine("Maze dimenstions: 12x12 || Mine count: 10");
-                        return Tuple.Create(12, 12, 10);
+                        return Tuple.Create(12, 12, 25);
                     }
                     else // choice == 3
                     {
                         Console.WriteLine("Maze dimenstions: 16x16 || Mine count: 14");
-                        return Tuple.Create(16, 16, 12);
+                        return Tuple.Create(16, 16, 40);
                     }
                 }
 

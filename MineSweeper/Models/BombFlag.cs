@@ -4,10 +4,7 @@ namespace MineSweeper.Models
 {
     public abstract class BombFlag
     {
-        //both bomb and flag stuff goes here, since the search logic (complicated) is already contained in Reveal.cs
-        //bomb placement & count referenced, but not created (maybe?). Flags placed based on user input and just sit there
-        //complare bomb and flag placement to determine win
-        //if bomb is revealed, lose
+        
 
     }
 
@@ -53,20 +50,37 @@ namespace MineSweeper.Models
             if (x < 0 || x >= board.board.GetLength(0) || y < 0 || y >= board.board.GetLength(1)) return false;
 
             var cell = board.board[x, y];
-            if (cell == null) //hidden
+
+            //Allow placing flag on hidden cell OR cell that currently contains bomb
+            if (cell == null || cell?.ToString() == Board.bomb)
             {
                 board.board[x, y] = Board.flag;
-                flagLocations.Add((x, y));
+                if (!flagLocations.Contains((x, y)))
+                    flagLocations.Add((x, y));
                 return true;
             }
             else if (cell?.ToString() == Board.flag) //unflag
             {
-                board.board[x, y] = null;
+                //restore the underlying content: if a bomb was originally placed here, restore the bomb marker
+                //otherwise restore to null/hidden
+                if (board.bombLocations.Contains((x, y)))
+                {
+                    board.board[x, y] = Board.bomb;
+                }
+                else
+                {
+                    board.board[x, y] = null;
+                }
                 flagLocations.Remove((x, y));
+                return false;
+            }
+            else if (cell?.ToString() == Board.bomb)
+            {
+                //this branch is now redundant because bomb case handled above, but keep for clarity
                 return false;
             }
             return false;
         }
-        
+
     }
 }

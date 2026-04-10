@@ -29,12 +29,38 @@ namespace MineSweeper.Logic
                 }
             }
             board.board[x, y] = bombCount > 0 ? bombCount.ToString() : Board.emptyRevealed;
-        } 
-
-        
+        }
 
 
-       
+        public void nearbyEmpty(int x, int y, Board board)
+        {
+            int rows = board.board.GetLength(0);
+            int cols = board.board.GetLength(1);
+            for (int i = -1; i <= 1; i++)
+            {
+                for (int j = -1; j <= 1; j++)
+                {
+                    int nr = x + i, nc = y + j;
+                    if (nr < 0 || nr >= rows || nc < 0 || nc >= cols) continue;
+
+                    //only act on unrevealed neighbors
+                    if (board.board[nr, nc] == null)
+                    {
+                        //reveal neighbor by computing nearby bombs
+                        nearbyBombs(nr, nc, board);
+
+                        //if neighbor is also empty (no adjacent bombs): continue
+                        if (board.board[nr, nc]?.ToString() == Board.emptyRevealed)
+                        {
+                            nearbyEmpty(nr, nc, board);
+                        }
+                        
+                    }
+                }
+            }
+        }
+
+
         /// <summary>
         /// reveals the selected tile, checks if it's a bomb or has bombs nearby, and updates the board accordingly.
         /// </summary>
@@ -49,6 +75,7 @@ namespace MineSweeper.Logic
 
             if (cell == null)
             {
+                nearbyEmpty(x, y, board);
                 nearbyBombs(x, y, board);
                 cell = Board.emptyRevealed;
                 return bombFound = false;

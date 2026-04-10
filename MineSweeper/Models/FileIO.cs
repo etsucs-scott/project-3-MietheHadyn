@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 
 namespace MineSweeper.Models
 {
@@ -21,7 +22,7 @@ namespace MineSweeper.Models
         {
             Console.WriteLine("What is the player's name?");
             string playerName = Console.ReadLine();
-            string highScoreEntry = $"{seed}: {score}";
+            string highScoreEntry = $"{playerName}'s game {seed}: {score}";
             try
             {
                 using (StreamWriter sw = new StreamWriter(Itempath, true))
@@ -29,6 +30,7 @@ namespace MineSweeper.Models
                     sw.WriteLine(highScoreEntry); 
                     
                 }
+                Console.WriteLine("File created.");
             }
             catch (Exception ex)
             {
@@ -38,6 +40,7 @@ namespace MineSweeper.Models
 
         public Tuple<int, int> LoadHighScore()
         {
+
             try
             {
                 using (StreamReader sr = new StreamReader(Itempath))
