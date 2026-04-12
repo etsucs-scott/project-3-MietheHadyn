@@ -15,7 +15,7 @@ namespace MineSweeper.Models
         //display/visuals
         public static string Hidden = "#";
         public static string flag = "F";
-        public static string bomb = "b"; //bomb display same as hidden as to not expose bomb location
+        public static string bomb = "#"; //bomb display same as hidden as to not expose bomb location
         public static string explode = "X"; //explosion for loss
         public static string emptyRevealed = ".";
         public int NearBomb = 1; //between 1-8, if there's bombs nearby.

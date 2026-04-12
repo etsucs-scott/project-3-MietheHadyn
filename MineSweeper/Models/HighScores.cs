@@ -1,4 +1,6 @@
-﻿namespace MineSweeper.Models
+﻿
+
+namespace MineSweeper.Models
 {
     internal class HighScores
     {
@@ -17,8 +19,8 @@
                 score = intEndTime - intStartTime;
                 return score;
 
-            }
-            else
+            } //xUnit test??
+            else //loss
             {
                 return score = 00000;
             }
@@ -30,5 +32,8 @@
             Console.WriteLine($"High score: {score}   Seed: {seed}");
            
         }
+
+
+        
     }
 }

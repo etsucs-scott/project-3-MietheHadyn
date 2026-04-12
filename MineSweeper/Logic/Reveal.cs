@@ -1,6 +1,7 @@
 ﻿using MineSweeper.Models;
 
 
+
 namespace MineSweeper.Logic
 {
     internal class Reveal
@@ -98,7 +99,6 @@ namespace MineSweeper.Logic
             }
         }
     }
-    
-
+ 
 }
 
