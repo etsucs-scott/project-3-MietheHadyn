@@ -2,13 +2,9 @@
 
 namespace MineSweeper.Models
 {
-    public abstract class BombFlag
-    {
-        
+   
 
-    }
-
-    public class Bomb : BombFlag
+    public class Bomb 
     {
         //bomb placement, count goes here
         public string bomb = "b"; //display
@@ -29,7 +25,7 @@ namespace MineSweeper.Models
 
     }
 
-    public class Flag : BombFlag
+    public class Flag
     {
 
         public string flag = "F"; //display
