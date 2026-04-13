@@ -19,7 +19,7 @@ namespace MineSweeper.Models
                 score = intEndTime - intStartTime;
                 return score;
 
-            } //xUnit test??
+            } 
             else //loss
             {
                 return score = 00000;

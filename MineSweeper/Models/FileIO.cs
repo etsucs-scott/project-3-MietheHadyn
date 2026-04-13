@@ -11,7 +11,7 @@ namespace MineSweeper.Models
         string ItmFileType = "txt";
         string ItmFileName = "HighScore_File";
         string Itempath;
-        string FilePath = Path.Combine("HighScores", "scoresAndSeeds.csv"); //superior file path?
+        
 
         public FileIO()
         {
@@ -60,7 +60,7 @@ namespace MineSweeper.Models
             {
                 Console.WriteLine($"Error loading high score: {ex.Message}");
             }
-            return null; //xunit test to make sure file works
-        } //this whole thing was autofilled so idk how well this may work
+            return null; 
+        } 
     }
 }

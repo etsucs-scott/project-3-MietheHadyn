@@ -4,12 +4,7 @@
     {
         public int seed { get; set; }
 
-        TimeOnly startTime = new TimeOnly();
-
-        public Seeds()
-        {
-            //idk how to do a constructor since it's a more method driven creation
-        }
+        
         public int SeedInput(TimeOnly startTime)
         {
             Console.WriteLine("Type the game's seed: ");

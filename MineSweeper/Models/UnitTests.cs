@@ -1,18 +1,14 @@
 ﻿using MineSweeper.Logic;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Xunit;
-using static System.Reflection.Metadata.BlobBuilder;
 
 namespace MineSweeper.Models
 {
 
-    public class BoardTests
+    public class UnitTests
     {
         //xUnit test for seedPlaceBombs method: check if bombs are placed correctly based on seed and bomb count
         [Fact]
-        public void SeedPlaceBombs_CorrectNumBombs()
+        public void SeedPlaceCorrectNumBombs()
         {
             //arrange
             var board = new Board(12, 12, 25);
@@ -50,11 +46,11 @@ namespace MineSweeper.Models
                 }
             }
         }
-        
-    }
 
-    public class  FlagTests
-    {
+
+
+
+
         public void Flag()
         {
             //arrange
@@ -94,13 +90,12 @@ namespace MineSweeper.Models
             Assert.Equal(Board.bomb, cell);
 
         }
-    }
 
-    //xUnit test for actReveal method: reveal empty cell, reveal bomb cell, reveal already revealed cell
-    //Seed for all tests is 12345 with a board size of 12x12 and 25 bombs
 
-    public class RevealTests
-    {
+        //xUnit test for actReveal method: reveal empty cell, reveal bomb cell, reveal already revealed cell
+        //Seed for all tests is 12345 with a board size of 12x12 and 25 bombs
+
+
         //Revealing bombs
         [Fact]
         public void RevealBomb()
@@ -130,7 +125,7 @@ namespace MineSweeper.Models
 
         public void RevealNearbyBombCnt()
         {
-           //arrange
+            //arrange
             var board = new Board(12, 12, 25);
             board.seedPlaceBombs(12345, 12, 12, board.Bombcount);
             var revealer = new Reveal(); //reveal instancer
@@ -141,13 +136,12 @@ namespace MineSweeper.Models
         }
 
 
-    }
 
-    //xUnit tests: CalcElapsedTime, loss return score 00000
-    public class HighScoresTests
-    {
+
+        //xUnit tests: CalcElapsedTime, loss return score 00000
+
         [Fact]
-        public void ScoreCalc_Win_ReturnsCorrectScore()
+        public void ScoreCalcWinReturnsCorrectScore()
         {
             // Arrange
             DateTime startTime = new DateTime(2024, 1, 1, 0, 0, 0);
@@ -161,7 +155,7 @@ namespace MineSweeper.Models
 
 
         [Fact]
-        public void ScoreCalc_Loss_ReturnsZero()
+        public void ScoreCalcLossReturnsZero()
         {
             // Arrange
             DateTime startTime = new DateTime(2024, 1, 1, 0, 0, 0);
@@ -172,13 +166,12 @@ namespace MineSweeper.Models
             //Assert
             Assert.Equal(00000, score);
         }
-    }
 
-    public class WinTest
-    {
-        
+
+
+
         [Fact]
-        public void WinCondition_AllNonBombsRevealed_ReturnsWin()
+        public void WinConditionAllNonBombsRevealedReturnsWin()
         {
             //arrange
             var board = new Board(12, 12, 25);
